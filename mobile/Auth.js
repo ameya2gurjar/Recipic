@@ -70,7 +70,7 @@ function withAuth(WrappedComponent) {
 
       const url = `https://${config.AUTH0_DOMAIN}/authorize` + toQueryString({
         audience: config.AUTH0_API_ID,
-        scope: 'openid profile',
+        scope: 'openid profile email',
         response_type: 'token id_token',
         client_id: config.AUTH0_CLIENT_ID,
         redirect_uri: redirectUrl,

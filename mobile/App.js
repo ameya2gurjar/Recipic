@@ -5,33 +5,57 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform
 } from 'react-native';
-import navigation, { StackNavigator } from 'react-navigation';
+import navigation, { TabNavigator, StackNavigator } from 'react-navigation';
 
 import { withAuth } from './Auth';
 
-import AuthDemoScreen from './screens/AuthDemoScreen';
+import SearchRecipe from './screens/SearchRecipe';
+import SavedRecipes from './screens/SavedRecipes';
+import RecipePage from './screens/RecipePage';
 import HomeScreen from './screens/HomeScreen';
-import FetchDemoScreen from './screens/FetchDemoScreen';
+
+const InitialScreen = TabNavigator({
+    Search: {screen: SearchRecipe},
+    Saved: {screen: SavedRecipes}
+  },
+  {
+    tabBarPosition: 'top',
+    animationEnabled: true,
+    tabBarOptions: {
+      activeTintColor: '#007676',
+    },
+});
+
+
+// const HomeScreen = ({ navigation }) => (
+//   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//     <Text style={styles.title}>Home Screen</Text>
+//     <Button
+//       onPress={() => navigation.navigate('RecipePage')}
+//       title="Go to Recipe"
+//     />
+//   </View>
+// );
+
+const DetailsScreen = ({navigation}) => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text style={styles.title}>Details Screen</Text>
+
+  </View>
+);
 
 const RootNavigator = StackNavigator({
-  Home: {
-    screen: HomeScreen,
+  Home: {screen: InitialScreen,
     navigationOptions: {
-      headerTitle: 'Home',
-    },
+      header: null
+    }
   },
-  AuthDemo: {
-    screen: AuthDemoScreen,
+  RecipePage: {
+    screen: RecipePage,
     navigationOptions: {
-      headerTitle: 'Auth Demo',
-    },
-
-  },
-  FetchDemo: {
-    screen: FetchDemoScreen,
-    navigationOptions: {
-      headerTitle: 'Fetch Demo',
+      headerTitle: 'Recipe Page',
     },
   },
 });
@@ -39,11 +63,25 @@ const RootNavigator = StackNavigator({
 class App extends React.Component {
 
   render() {
-    // screenProps is one way to pass props to a navigator
-    // https://reactnavigation.org/docs/navigators/navigation-options#Two-Ways-to-specify-each-option
-    return <RootNavigator screenProps={this.props} />
+    return (
+      // TODO: Add Navigator in view and provide padding: https://github.com/react-community/react-navigation/issues/1478
+        <RootNavigator/>
+    );
   }
 
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 40,
+  },
+});
 Expo.registerRootComponent(withAuth(App));

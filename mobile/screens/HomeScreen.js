@@ -13,30 +13,21 @@ import { KeepAwake } from 'expo';
 
 class HomeScreen extends React.Component {
 
+
+  static navigationOptions = {
+      title: 'HomeScreen',
+    };
   render() {
     // console.log('HomeScreen props!', this.props)
-
+    const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>home screen</Text>
-        <View style={styles.spaced}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={styles.title}>Home Screen</Text>
           <Button
-            onPress={() => this.props.navigation.navigate('FetchDemo')}
-            title="fetch demo"
+            onPress={() => navigate('RecipePage')}
+            title="Go to Recipe Page"
           />
         </View>
-
-        <View style={styles.spaced}>
-          <Button
-            onPress={() => this.props.navigation.navigate('AuthDemo')}
-            title="auth demo"
-            style={styles.spaced}
-          />
-        </View>
-
-        <Text style={styles.spaced}>(staying awake)</Text>
-        <KeepAwake />
-      </View>
     )
   }
 
