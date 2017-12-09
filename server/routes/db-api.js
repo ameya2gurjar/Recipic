@@ -47,4 +47,18 @@ router.get('/protected', checkJwt, function(req, res, next) {
 
 });
 
+router.post('/search', function(req, res, next){
+	var searchterm = req.body.searchterm;
+	console.log(searchterm);
+	res.send("Sup");
+});
+
+router.post('/image', function(req, res, next){
+	var image = req.body;
+	console.log(image);
+	res.send("Sup");
+});
+
+
+
 module.exports = router;
