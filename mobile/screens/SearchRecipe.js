@@ -14,7 +14,7 @@ class SearchRecipe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: 'This is the Search Recipes Page',
+      message: 'This is the Search Recipes Page lol',
       searchterm: ""
     }
   }
