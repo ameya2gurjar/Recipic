@@ -12,7 +12,6 @@
     "node": "8.5.x"
   },
   "dependencies": {
-    "@ionic-native/core": "^4.5.0",
     "body-parser": "~1.17.1",
     "cheerio": "^1.0.0-rc.2",
     "co": "^4.6.0",
@@ -29,12 +28,8 @@
     "multer": "^1.3.0",
     "multer-gridfs-storage": "^2.1.0",
     "node-fetch": "^1.7.3",
-<<<<<<< HEAD
-    "react-native-navbar-icons": "^1.8.1",
-=======
     "react-native-elements": "^0.18.5",
     "react-native-material-textfield": "^0.11.0",
->>>>>>> 459573e8f2ecc7c39d0be8412c73958056fd4611
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.21",
     "request": "^2.83.0",

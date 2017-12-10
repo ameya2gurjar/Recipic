@@ -6,6 +6,7 @@ import {
   View,
   Image,
 } from 'react-native';
+import Tts from 'react-native-tts';
 
 
 import config from '../config'
