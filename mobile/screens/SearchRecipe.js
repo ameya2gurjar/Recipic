@@ -76,12 +76,15 @@ class SearchRecipe extends React.Component {
     return (
       <View style={{flex: 1}}>
 			
-		<View style={{flex: 1, flexDirection: 'row'}}>
-			<View style={{flex: 1, marginHorizontal: 15}}>
+		<View style={{flexDirection: 'row'}}>
+			<View style={{flex: 1, marginHorizontal: 15, marginBottom: 0}}>
 			<TextField
 			label='Search Recipe'  
         	value={this.state.searchterm}
         	onChangeText={(searchterm) => this.setState({searchterm})}	
+			onSubmitEditing={this.startSearch}
+			returnKeyType={"search"}	
+			style={{marginBottom: 0}}
       		/>
 			</View>
 
