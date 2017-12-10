@@ -25,7 +25,7 @@ const InitialScreen = TabNavigator({
     tabBarPosition: 'top',
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: '#007676',
+      activeTintColor: '#FFFFFF',	
     },
 });
 

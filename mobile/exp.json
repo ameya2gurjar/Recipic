@@ -9,7 +9,7 @@
   "primaryColor": "#cccccc",
   "icon": "./icon.png",
   "loading": {
-    "icon": "./icon.png",
+    "icon": "./images/burger-icon.png",
     "hideExponentText": false
   },
   "packagerOpts": {
