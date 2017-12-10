@@ -26,43 +26,66 @@ router.post('/search', function(req, res, next){
   var searchterm = req.body.searchterm;
   // var searchterm = "ham sandwich"
   console.log(searchterm);
-  var recipes = [];
-  var link = "http://allrecipes.com/search/results/?wt=" + searchterm;
+  var AllRecipes = new Object();
 
-    request(link, function (error, response, body) {
-      // console.log('error:', error); // Print the error if one occurred
-      // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      // console.log('body:', body); // Print the HTML for the Google homepage.
-
-      if (!error && response.statusCode == 200) {
+  var link = "https://food52.com/recipes/search?q=" + searchterm;
+  request(link, function (error, response, body) {
+    var recipes = [];
+    if (!error && response.statusCode == 200) {
       var $ = cheerio.load(body);
-      $('article.grid-col--fixed-tiles').each(function(i, element){
-        if(!($(this).hasClass('hub-card') || $(this).hasClass('video-card')) && !($(this).next().hasClass('article-card'))){
+       $('div.collectable-tile').each(function(i, element){
+        // if(!($(this).hasClass('hub-card') || $(this).hasClass('video-card')) && !($(this).next().hasClass('article-card'))){
           var recipe = new Object();
-	        var a = $(this).find('h3').text();
-          var imageurl = $(this).find('img').attr("data-original-src");
-          var text = $(this).find('div.rec-card__description').text();
-          var recipeby = $(this).find('ul.cook-details').find('li').find('h4').text();
-          var nextlink = "allrecipes.com" + $(this).find('a').attr("href");
-          //console.log(imageurl);
-          //console.log(text);
-          //console.log(recipeby);
-          //console.log(nextlink);
+          var name = $(this).find('.photo').attr('title');
+          var nextlink = "https://food52.com" + $(this).find('.photo').attr('href');
+          var imageurl = $(this).find('img.quick-basket-img').attr('data-pin-media');
+          var recipeby = $(this).find('h3').find('.meta').find('.username').text();
 
-          if(!!a && !!imageurl && !!text && !!recipeby && !!nextlink){
-            recipe.name = a.trim();
+          if(!!name && !!imageurl && !!recipeby && !!nextlink){
+            recipe.name = name.trim();
             recipe.imageurl = imageurl.trim();
-            recipe.text = text.trim();
-            recipe.recipeby = recipeby.substring(10).trim();
+            recipe.recipeby = recipeby.trim();
             recipe.nextlink = nextlink.trim();
-	          recipes.push(recipe);
+            recipes.push(recipe);
           }
-        }
       });
-      //console.log(recipes);
-          res.json({'recipes':recipes});
+      console.log(recipes);
+      AllRecipes.food52 = recipes;
     }
+
+    // Allrecipes.com
+    var link = "http://allrecipes.com/search/results/?wt=" + searchterm;
+    request(link, function (error, response, body) {
+      var recipes = [];
+      if (!error && response.statusCode == 200) {
+        var $ = cheerio.load(body);
+        $('article.grid-col--fixed-tiles').each(function(i, element){
+          if(!($(this).hasClass('hub-card') || $(this).hasClass('video-card')) && !($(this).next().hasClass('article-card'))){
+            var recipe = new Object();
+  	        var a = $(this).find('h3').text();
+            var imageurl = $(this).find('img').attr("data-original-src");
+            var text = $(this).find('div.rec-card__description').text();
+            var recipeby = $(this).find('ul.cook-details').find('li').find('h4').text();
+            var nextlink = "http://allrecipes.com" + $(this).find('a').attr("href");
+
+            if(!!a && !!imageurl && !!text && !!recipeby && !!nextlink){
+              recipe.name = a.trim();
+              recipe.imageurl = imageurl.trim();
+              recipe.text = text.trim();
+              recipe.recipeby = recipeby.substring(10).trim();
+              recipe.nextlink = nextlink.trim();
+  	          recipes.push(recipe);
+            }
+          }
+        });
+        console.log(recipes);
+        AllRecipes.allrecipes = recipes
+        res.json(AllRecipes);
+      }
     });
+
+
+  });
 });
 
 
@@ -93,5 +116,98 @@ router.get('/protected', checkJwt, function(req, res, next) {
     .catch(e => console.error('error fetching userinfo from auth0'));
 
 });
+
+
+router.post('/getRecipe', function(req, res, next){
+  var link=req.body.url;
+
+  if(link.indexOf('allrecipes')!=-1){
+    request(link, function (error, response, body) {
+      const $ = cheerio.load(body);
+      var currentRecipe = new Object();
+      var mhead = $('.recipe-summary__h1').text()
+      var rname = $('.submitter__name').text()
+      var desc = $('.submitter__description').text()
+       var imageurl = $('.hero-photo__wrap').find('img').attr("src");
+      //var imageurl = req.query.img;
+      var prepTime = $('.prepTime__item').find('[itemprop="prepTime"]').text()
+      var cookTime = $('.prepTime__item').find('[itemprop="cookTime"]').text()
+      var readyTime = $('.prepTime__item').find('[itemprop="totalTime"]').text()
+
+
+      var ingredients = [];
+      var yt = $('section.recipe-ingredients');
+      $(yt).find('ul').each(function(i,element){
+        $(this).find('li').each(function(i, element){
+          var a = $(this).find('span.recipe-ingred_txt').text().trim();
+          if(!!a && a!="Add all ingredients to list")
+          ingredients.push(a);
+        });
+
+      });
+
+      var recsteps = [];
+      $('.directions--section__steps').find('li').each(function(i, element){
+        var a = $(this).find('span.recipe-directions__list--item').text().trim();
+        if(!!a)
+        recsteps.push(a);
+      });
+
+      currentRecipe.title=mhead.trim();
+      currentRecipe.imageurl=imageurl.trim();
+      currentRecipe.recipeby=rname.trim();
+      currentRecipe.desc=desc.trim();
+      currentRecipe.ingredients=ingredients;
+      currentRecipe.prepTime=prepTime.trim();
+      currentRecipe.cookTime=cookTime.trim();
+      currentRecipe.readyTime=readyTime.trim();
+      currentRecipe.steps=recsteps;
+      console.log(currentRecipe);
+      res.json(currentRecipe);
+    });
+  }
+
+
+  else if(link.indexOf('food52')!=-1){
+    request(link, function (error, response, body) {
+      console.log(body);
+      const $ = cheerio.load(body);
+      var currentRecipe = new Object();
+
+      var title = $('.article-header-title').text();
+      var recipeby = $('.article-header-meta').find('[itemprop="author"]').text();
+      var desc = $('.recipe-note').find('[itemprop="description"]').text();
+      var ingredients = [];
+      var directions = [];
+      var imageurl = $('figure.photo-frame').find('img').attr('src');
+      console.log(imageurl);
+      $('section.clearfix').each(function(i, element){
+        $(this).find('ul.recipe-list').find('li').each(function(i, element){
+          var ingredient = "";
+          $(this).find('span').each(function(i, element){
+            ingredient+= $(this).text().trim()+" ";
+          });
+          ingredients.push(ingredient.trim());
+        });
+
+        $(this).find('[itemprop="recipeInstructions"]').each(function(i, element){
+          directions.push($(this).text().trim());
+        });
+
+      });
+
+
+      currentRecipe.title = title.trim();
+      currentRecipe.recipeby = recipeby.trim();
+      currentRecipe.desc = desc.trim();
+      currentRecipe.ingredients = ingredients;
+      currentRecipe.directions = directions;
+      console.log(currentRecipe);
+      res.json(currentRecipe);
+    });
+  }
+
+});
+
 
 module.exports = router;
