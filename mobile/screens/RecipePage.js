@@ -7,11 +7,13 @@ import {
   Image,
 } from 'react-native';
 
+
 import config from '../config'
 
 class RecipePage extends React.Component {
   static navigationOptions = {
-    title: 'Recipe Page',
+    title: 'Burger',
+
   };
 
   constructor(props) {
@@ -23,7 +25,8 @@ class RecipePage extends React.Component {
   render() {
     return (
       <View>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+        <View style={{flexDirection: 'row', alignSelf: 'center', borderWidth: 1,
+        borderRadius: 75, marginTop: 20}}>
         <Image
             style={{width: 500, height: 200}}
             source={{uri: 'https://cbsnews2.cbsistatic.com/hub/i/r/2012/03/30/cc26a85a-d26f-11e2-a43e-02911869d855/thumbnail/620x350/c0a45b5d426bb465b160c6fdbce12124/whopper.jpg'}}
