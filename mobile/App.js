@@ -1,11 +1,12 @@
 import Expo from 'expo';
 import React from 'react';
 import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  Platform
+  	Button,
+  	StyleSheet,
+	Text,
+	View,
+	Platform, 
+	StatusBar
 } from 'react-native';
 import navigation, { TabNavigator, StackNavigator } from 'react-navigation';
 
@@ -65,7 +66,10 @@ class App extends React.Component {
   render() {
     return (
       // TODO: Add Navigator in view and provide padding: https://github.com/react-community/react-navigation/issues/1478
-        <RootNavigator/>
+		<View style={{flex:1}}>
+		<View style={styles.statusBar} />
+        	<RootNavigator/>
+		</View>
     );
   }
 
@@ -82,6 +86,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     marginTop: 40,
+  }, statusBar: {
+    backgroundColor: "#66acd3",
+    height: StatusBar.currentHeight,
   },
+	
 });
 Expo.registerRootComponent(withAuth(App));
