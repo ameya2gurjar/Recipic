@@ -120,7 +120,7 @@ router.get('/protected', checkJwt, function(req, res, next) {
 
 router.post('/getRecipe', function(req, res, next){
   var link=req.body.url;
-  var imageurl =req.body.img;
+  // var imageurl =req.body.img;
 
   if(link.indexOf('allrecipes')!=-1){
     request(link, function (error, response, body) {
@@ -129,7 +129,7 @@ router.post('/getRecipe', function(req, res, next){
       var mhead = $('.recipe-summary__h1').text()
       var rname = $('.submitter__name').text()
       var desc = $('.submitter__description').text()
-       // var imageurl = $('.hero-photo__wrap').find('img').attr("src");
+       var imageurl = $('.hero-photo__wrap').find('img').attr("src");
       var prepTime = $('.prepTime__item').find('[itemprop="prepTime"]').text()
       var cookTime = $('.prepTime__item').find('[itemprop="cookTime"]').text()
       var readyTime = $('.prepTime__item').find('[itemprop="totalTime"]').text()
@@ -154,7 +154,7 @@ router.post('/getRecipe', function(req, res, next){
       });
 
       currentRecipe.title=mhead.trim();
-      // currentRecipe.imageurl=imageurl.trim();
+      currentRecipe.imageurl=imageurl.trim();
       currentRecipe.recipeby=rname.trim();
       currentRecipe.desc=desc.trim();
       currentRecipe.ingredients=ingredients;
@@ -195,7 +195,7 @@ router.post('/getRecipe', function(req, res, next){
 
       });
 
-      // currentRecipe.imageurl = imageurl.trim();
+      currentRecipe.imageurl = imageurl.trim();
       currentRecipe.title = title.trim();
       currentRecipe.recipeby = recipeby.trim();
       currentRecipe.desc = desc.trim();

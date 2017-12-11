@@ -25,7 +25,7 @@ class SavedRecipes extends React.Component {
   render() {
     return (
       <View>
-		
+
 		{this.state.noRecipeYet && <View style={{
         flex: 1,
         flexDirection: 'column',
@@ -34,14 +34,17 @@ class SavedRecipes extends React.Component {
 		padding: 50,
 			marginTop: 150
       }}>
-			
+
 		<Image style ={{width:200, height:200}}
           source={require('../images/save-burger.png')}
         />
 		<Text style={{fontSize:18, textAlign: 'center'}}>{"You've not saved any recipes yet. Click on the star on any recipe you like :)"}</Text>
 				</View>}
-		
-        
+        <Button
+                 onPress={() => this.props.navigation.navigate('RecipePage')}
+                 title="Go to Recipe"
+               />
+
       </View>
     );
   }
@@ -49,8 +52,3 @@ class SavedRecipes extends React.Component {
 }
 
 export default SavedRecipes;
-//
-//<Button
-//          onPress={() => this.props.navigation.navigate('RecipePage')}
-//          title="Go to Recipe"
-//        />

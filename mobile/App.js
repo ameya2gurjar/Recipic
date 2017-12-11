@@ -9,6 +9,7 @@ import {
 	StatusBar
 } from 'react-native';
 import navigation, { TabNavigator, StackNavigator } from 'react-navigation';
+import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { withAuth } from './Auth';
 
@@ -31,7 +32,7 @@ const InitialScreen = TabNavigator({
   	},
 		indicatorStyle: {
     	backgroundColor: '#FFFFFF',
-		height: 3,	
+		height: 3,
   	},
 		labelStyle: {
     	fontWeight: 'bold',
@@ -67,7 +68,7 @@ const RootNavigator = StackNavigator({
   RecipePage: {
     screen: RecipePage,
     navigationOptions: {
-      headerTitle: 'Burger', //Get the recipe name here
+      headerTitle: 'Recipe', //Get the recipe name here
     },
   },
 });
