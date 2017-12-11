@@ -5,7 +5,7 @@ import {
   	StyleSheet,
 	Text,
 	View,
-	Platform, 
+	Platform,
 	StatusBar
 } from 'react-native';
 import navigation, { TabNavigator, StackNavigator } from 'react-navigation';
@@ -56,7 +56,7 @@ const RootNavigator = StackNavigator({
   RecipePage: {
     screen: RecipePage,
     navigationOptions: {
-      headerTitle: 'Recipe Page',
+      headerTitle: 'Burger', //Get the recipe name here
     },
   },
 });
@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#66acd3",
     height: StatusBar.currentHeight,
   },
-	
+
 });
 Expo.registerRootComponent(withAuth(App));

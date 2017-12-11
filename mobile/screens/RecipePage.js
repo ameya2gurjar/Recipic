@@ -6,16 +6,15 @@ import {
   View,
   Image,
 } from 'react-native';
-import Tts from 'react-native-tts';
-
-
+import { Ionicons } from '@expo/vector-icons';
 import config from '../config'
+
 
 class RecipePage extends React.Component {
   static navigationOptions = {
-    title: 'Burger',
-
+    title: 'Burger'
   };
+
 
   constructor(props) {
     super(props);
@@ -33,6 +32,7 @@ class RecipePage extends React.Component {
             source={{uri: 'https://cbsnews2.cbsistatic.com/hub/i/r/2012/03/30/cc26a85a-d26f-11e2-a43e-02911869d855/thumbnail/620x350/c0a45b5d426bb465b160c6fdbce12124/whopper.jpg'}}
           />
        </View>
+      <Ionicons name="md-share" size={20} style={{width: 20, height: 20, marginTop: 5, alignSelf: 'flex-end'}} />
       </View>
     );
   }
