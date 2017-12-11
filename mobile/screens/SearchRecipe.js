@@ -8,13 +8,16 @@ import {
 	Image,
 	ScrollView,
 	ActivityIndicator,
-	FlatList
+	FlatList,
+	Linking
 } from 'react-native';
 import { ImagePicker } from 'expo';
 import RecipeCard from './Card';
+import ErrorMsgBurgers from './ErrorMsgBurgers';
 import { Ionicons } from '@expo/vector-icons';
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SearchBar } from 'react-native-elements'
 import config from '../config'
 
 class SearchRecipe extends React.Component {
@@ -28,6 +31,10 @@ class SearchRecipe extends React.Component {
 		image_base64: "",
 		searchterm: "",
 		isLoading:false,
+		notSearchedYet: true,
+		notFood: false,
+		noResult: false,
+		searchedFor: "",
 		data:{title:"Spaghetti Sauce with Ground Beef", img:'http://images.media-allrecipes.com/userphotos/250x250/00/66/77/667748.jpg', recipeBy: 'Random Person'}
     }
   }
@@ -36,7 +43,7 @@ class SearchRecipe extends React.Component {
   }
 	startSearch = () => {
 		
-		this.setState({isLoading:true});
+		this.setState({isLoading:true, notSearchedYet: false, notFood: false, noResult: false, searchedFor:this.state.searchterm});
 		
 		console.log("Submitted: " + this.state.searchterm);
 		let myRequest = new Request(`${config.API_BASE}/api/db/search`, {
@@ -63,12 +70,16 @@ class SearchRecipe extends React.Component {
       .then(json => {
 		console.log(json);
 		this.setState({recipes: json, isLoading:false});
+		if(json.allrecipes.length==0 && json.food52.length==0)
+			{
+				this.setState({noResult:true});
+			}
       })
       .catch(error => {
         this.setState({ 'authStatus': 'broken; are you logged in? check logs.' });
       });
 	}
-	
+
 
   render() {
 	  let { image } = this.state;
@@ -76,23 +87,81 @@ class SearchRecipe extends React.Component {
     return (
       <View style={{flex: 1}}>
 			
-		<View style={{flex: 1, flexDirection: 'row'}}>
-			<View style={{flex: 1, marginHorizontal: 15}}>
+		<View style={{flexDirection: 'row'}}>
+			
+
+				
+			<View style={{flex: 1, marginHorizontal: 15, marginBottom: 0}}>
 			<TextField
 			label='Search Recipe'  
         	value={this.state.searchterm}
         	onChangeText={(searchterm) => this.setState({searchterm})}	
+			onSubmitEditing={this.startSearch}
+			returnKeyType={"search"}	
+			tintColor='#388E3C'	
+			style={{marginBottom: 0}}
       		/>
 			</View>
 
-<Ionicons name="md-camera" size={32} onPress={this._pickImageCamera} style={{width: 45, height: 30, marginTop: 30}} />
+<Ionicons name="md-camera" size={32} color={'#2b2b3c'} onPress={this._pickImageCamera} style={{width: 45, height: 30, marginTop: 30}}/>
 			
-<Ionicons name="md-photos" size={32} onPress={this._pickImageCameraRoll} style={{width: 45, height: 30, marginTop: 30}}  />
+<Ionicons name="md-photos" size={32} color={'#2b2b3c'} onPress={this._pickImageCameraRoll} style={{width: 45, height: 30, marginTop: 30}}  />
 	</View>
 			
+			{!!this.state.searchedFor && !this.state.isLoading && <Text style={{fontSize:14, textAlign: 'center', marginHorizontal:15}}>{'Showing results for "' + this.state.searchedFor + '"'}</Text>}
+			
+			<View style={{paddingHorizontal: 90, marginTop: 10, marginBottom: 10}}>
+			{!!this.state.searchedFor && !this.state.isLoading && !this.state.notSearchedYet && <Button title="Search on YouTube" color="#FF0000" onPress={() => Linking.openURL('https://www.youtube.com/results?search_query='+this.state.searchedFor+'+recipe')}>
+      		<Text>Press me</Text>
+    		</Button>}	
+			</View>	
 			
 			{this.state.isLoading && <ActivityIndicator size="large" color="#000" />}
-																
+									
+			{this.state.notSearchedYet && <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+		padding: 50,
+			marginBottom: 100
+      }}>
+			
+		<Image style ={{width:200, height:200}}
+          source={require('../images/search-burger.png')}
+        />
+		<Text style={{fontSize:18, textAlign: 'center'}}>{"Search for any recipe. You can use the search bar or upload an image :)"}</Text>
+				</View>}
+			
+			{this.state.notFood && <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+		padding: 50,
+			marginTop: 50
+      }}>
+			
+		<Image style ={{width:200, height:200}}
+          source={require('../images/confused-burger.png')}
+        />
+		<Text style={{fontSize:18, textAlign: 'center'}}>{"Are you sure that was an image of food? Please try uploading another image :)"}</Text>
+				</View>}
+			
+			{this.state.noResult && <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+		padding: 50,
+			marginTop: 50
+      }}>
+			
+		<Image style ={{width:200, height:200}}
+          source={require('../images/sad-burger.png')}
+        />
+		<Text style={{fontSize:18, textAlign: 'center'}}>{'Sorry we couldn\'t find any recipes for "'+this.state.searchedFor+'" :('}</Text>
+				</View>}
 			
 			{this.state.recipes && <FlatList
   data={this.state.recipes.allrecipes}
@@ -109,7 +178,7 @@ class SearchRecipe extends React.Component {
 
 sendImage()
 {
-	this.setState({isLoading:true});
+	this.setState({isLoading:true, notSearchedYet:false, notFood: false, noResult: false, searchterm: "", recipes:[], searchedFor:""});
 	
 		const new_req = {
 		"requests": [{
@@ -146,6 +215,9 @@ sendImage()
 			if(food){
 				this.setState({'searchterm':myObject.responses[0].labelAnnotations[0].description});
 				this.startSearch();
+			}
+			else{
+				this.setState({notFood:true, isLoading:false, recipes:[], searchterm:""});
 			}
 		})
 			 //JSON.parse(res.bodyInit))

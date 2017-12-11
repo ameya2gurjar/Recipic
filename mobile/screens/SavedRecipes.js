@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from 'react-native';
 
 import config from '../config'
@@ -14,6 +15,7 @@ class SavedRecipes extends React.Component {
     super(props);
     this.state = {
       message: 'This is the Saved Recipes Page',
+	  noRecipeYet: true
     }
   }
 
@@ -23,11 +25,23 @@ class SavedRecipes extends React.Component {
   render() {
     return (
       <View>
-        <Text>{this.state.message}</Text>
-        <Button
-          onPress={() => this.props.navigation.navigate('RecipePage')}
-          title="Go to Recipe"
+		
+		{this.state.noRecipeYet && <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+		padding: 50,
+			marginTop: 150
+      }}>
+			
+		<Image style ={{width:200, height:200}}
+          source={require('../images/save-burger.png')}
         />
+		<Text style={{fontSize:18, textAlign: 'center'}}>{"You've not saved any recipes yet. Click on the star on any recipe you like :)"}</Text>
+				</View>}
+		
+        
       </View>
     );
   }
@@ -35,3 +49,8 @@ class SavedRecipes extends React.Component {
 }
 
 export default SavedRecipes;
+//
+//<Button
+//          onPress={() => this.props.navigation.navigate('RecipePage')}
+//          title="Go to Recipe"
+//        />

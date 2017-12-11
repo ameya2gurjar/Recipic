@@ -36,7 +36,7 @@ class RecipeCard extends React.Component {
 				<Text numberOfLines={3} ellipsizeMode ={'tail'} style={{fontSize:18, marginBottom:10}}>
 				  {this.props.data.name}
 				</Text>
-			<Text style={{color:'#777'}}>
+			<Text style={{color:'#388E3C'}}>
 				By: {this.props.data.recipeby}
 			</Text>
 			</View>
