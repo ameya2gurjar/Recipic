@@ -98,6 +98,7 @@ class SearchRecipe extends React.Component {
         	onChangeText={(searchterm) => this.setState({searchterm})}	
 			onSubmitEditing={this.startSearch}
 			returnKeyType={"search"}	
+			tintColor='#388E3C'	
 			style={{marginBottom: 0}}
       		/>
 			</View>

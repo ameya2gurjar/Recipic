@@ -25,7 +25,18 @@ const InitialScreen = TabNavigator({
     tabBarPosition: 'top',
     animationEnabled: true,
     tabBarOptions: {
-      activeTintColor: '#FFFFFF',	
+      activeTintColor: '#FFFFFF',
+	  style: {
+    backgroundColor: '#388E3C',
+  	},
+		indicatorStyle: {
+    	backgroundColor: '#FFFFFF',
+		height: 3,	
+  	},
+		labelStyle: {
+    	fontWeight: 'bold',
+		fontSize: 14,
+  	},
     },
 });
 
@@ -87,7 +98,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 40,
   }, statusBar: {
-    backgroundColor: "#66acd3",
+    backgroundColor: "#45c006",
     height: StatusBar.currentHeight,
   },
 	
