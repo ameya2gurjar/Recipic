@@ -6,6 +6,7 @@ import {
   View,
   Image,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import config from '../config'
@@ -37,9 +38,10 @@ class RecipePage extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {isFavourite : false};
+    this.state = {isFavourite : false, data:['A', 'B', 'C', 'D']};
     this.addToFavourites = this.addToFavourites.bind(this);
     this.removeFromFavourites = this.removeFromFavourites.bind(this);
+    this.readIngrediants = this.readIngrediants.bind(this);
   }
 
   addToFavourites (){
@@ -87,6 +89,13 @@ class RecipePage extends React.Component {
       return <Text style={{textAlign: 'center'}}>{index + 1}. {item}</Text>;
    }
 
+   readIngrediants(){
+     console.log(this.props.screenProps);
+     for(let i = 0; i < this.state.data.length; i++){
+       Expo.Speech.speak(this.state.data[i], {pitch: 1.0, rate: 1.0, language: "en-US" })
+     }
+   }
+
   render() {
 
   console.log(this.state.isFavourite);
@@ -115,7 +124,9 @@ class RecipePage extends React.Component {
       <Text style={{fontSize:18, textAlign: 'center', fontFamily:'sans-serif-condensed'}}>Name of the recipe</Text>
       </View>
       <View>
-      <Text style={{fontSize:18, textAlign: 'center', fontFamily:'sans-serif-condensed'}}>Ingrediants</Text>
+      <TouchableOpacity onPress={this.readIngrediants}>
+        <Text style={{fontSize:18, textAlign: 'center', fontFamily:'sans-serif-condensed'}}>Ingrediants</Text>
+      </TouchableOpacity>
       <FlatList
           data={[ 'A', 'B', 'C', 'D']}
           renderItem={this.renderItem}
