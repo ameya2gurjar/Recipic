@@ -165,7 +165,7 @@ class SearchRecipe extends React.Component {
 			
 			{this.state.recipes && <FlatList
   data={this.state.recipes.allrecipes}
-  renderItem={({item}) => <RecipeCard key={item.nextlink} data={item}/>}
+  renderItem={({item}) => <RecipeCard {...this.props} key={item.nextlink} data={item}/>}
 			 keyExtractor={(item, index) => index}
 />}
 

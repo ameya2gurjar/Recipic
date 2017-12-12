@@ -19,6 +19,7 @@ class RecipePage extends React.Component {
 
   constructor(props) {
     super(props);
+	  console.log(this.props.navigation.state.params.nextlink)
     this.state = {
     }
   }

@@ -6,6 +6,7 @@ import {
   Image,
   ListItem,
   View,
+TouchableHighlight
 } from 'react-native';
 
 import { Card } from 'react-native-elements';
@@ -23,11 +24,19 @@ class RecipeCard extends React.Component {
 
   componentDidMount() {
   }
+	
+	onPress(link){
+		console.log("You pressed the card: " + link);
+	}
 
   render() {
     return (
 <Card flexDirection='row' >
-  <View style={{flex: 1, flexDirection:'row', marginRight:110}}>
+	<TouchableHighlight 
+		onPress={() => this.props.navigation.navigate('RecipePage', {nextlink:this.props.data.nextlink})}
+		activeOpacity={1}
+          underlayColor="#eee">
+	  <View style={{flex: 1, flexDirection:'row', marginRight:110}}>
 				<Image
 				style={{height: 100, width: 100, borderRadius:10, marginRight:10}}
 				source={{uri: this.props.data.imageurl}}
@@ -41,6 +50,7 @@ class RecipeCard extends React.Component {
 			</Text>
 			</View>
 </View>
+	</TouchableHighlight>
 			</Card>
       
     );
