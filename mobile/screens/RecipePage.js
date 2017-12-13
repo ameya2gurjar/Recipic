@@ -7,7 +7,8 @@ import {
   Image,
   FlatList,
   TouchableHighlight,
-	ScrollView
+	ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import config from '../config'
@@ -47,6 +48,7 @@ class RecipePage extends React.Component {
 
   constructor(props) {
     super(props);
+
 	  console.log(this.props);
     this.state = {isFavourite : false,   
 				  alldone: true,
@@ -54,6 +56,7 @@ class RecipePage extends React.Component {
 //    this.addToFavourites = this.addToFavourites.bind(this);
     this.toggleFavourite = this.toggleFavourite.bind(this);
 	  this.speak = this.speak.bind(this);
+
 
   }
 
@@ -228,6 +231,13 @@ speak(tospeak, from){
 								 underlayColor="#eee"><Text style={{textAlign: 'left'}}>&#10148; {item}{"\n"}</Text></TouchableHighlight>;
    }
 
+   readIngrediants(){
+     console.log(this.props.screenProps);
+     for(let i = 0; i < this.state.data.length; i++){
+       Expo.Speech.speak(this.state.data[i], {pitch: 1.0, rate: 1.0, language: "en-US" })
+     }
+   }
+
   render() {
 const {profile, login, logout, getAuthorizationHeader} = this.props.screenProps;
 //  console.log(this.state.isFavourite);
@@ -263,6 +273,7 @@ const {profile, login, logout, getAuthorizationHeader} = this.props.screenProps;
 		<Ionicons name="md-share" size={40} style={{width: 30, height: 40, marginTop: 5, marginRight: 10}} onPress={ () => this.shareTextMessage() }/>	
 		</View>  
       </View>
+
       <View style={{alignItems: 'flex-start', marginTop: 20}}>
 	  <View Style={{flexDirection: 'row', width: 400, alignItems: 'center'}}>	  
       <View><Text style={{fontSize:18, fontFamily:'sans-serif-condensed', color:'#388E3C', fontWeight: 'bold'}}>Ingredients</Text></View>  
@@ -271,6 +282,7 @@ const {profile, login, logout, getAuthorizationHeader} = this.props.screenProps;
 		   {!(this.state.alldone && (this.state.from!="ing" || !this.state.inProgress) ) && <Ionicons name="md-volume-off" size={40} style={{marginBottom: 10}} onPress={() => this._stop()}/>}
 	  </View>
 	  </View>	  
+
       <FlatList
           data={this.state.recipe.ingredients}
           renderItem={this.renderItem}
