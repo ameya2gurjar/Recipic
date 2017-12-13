@@ -24,8 +24,10 @@ class SearchRecipe extends React.Component {
 
 
   constructor(props) {
+	  
     super(props);
-    this.state = {
+const {profile, login, logout, getAuthorizationHeader} = this.props.screenProps;
+	  this.state = {
     	message: 'This is the Search Recipes Page',
 		image: null,
 		image_base64: "",
@@ -43,7 +45,7 @@ class SearchRecipe extends React.Component {
   }
 	startSearch = () => {
 		
-		this.setState({isLoading:true, notSearchedYet: false, notFood: false, noResult: false, searchedFor:this.state.searchterm});
+		this.setState({isLoading:true, notSearchedYet: false, notFood: false, noResult: false, recipes: [], searchedFor:this.state.searchterm} );
 		
 		console.log("Submitted: " + this.state.searchterm);
 		let myRequest = new Request(`${config.API_BASE}/api/db/search`, {
@@ -117,6 +119,21 @@ class SearchRecipe extends React.Component {
 			</View>	
 			
 			{this.state.isLoading && <ActivityIndicator size="large" color="#000" />}
+			
+			{this.state.isLoading && <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+		padding: 50,
+			marginTop: 20
+      }}>
+			
+		<Image style ={{width:150, height:150}}
+          source={require('../images/angry-burger.png')}
+        />
+		<Text style={{fontSize:18, textAlign: 'center'}}>{"Why is the internet so slow? :/"}</Text>
+				</View>}
 									
 			{this.state.notSearchedYet && <View style={{
         flex: 1,

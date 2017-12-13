@@ -5,10 +5,11 @@ import {
   	StyleSheet,
 	Text,
 	View,
-	Platform, 
+	Platform,
 	StatusBar
 } from 'react-native';
 import navigation, { TabNavigator, StackNavigator } from 'react-navigation';
+import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { withAuth } from './Auth';
 
@@ -31,7 +32,7 @@ const InitialScreen = TabNavigator({
   	},
 		indicatorStyle: {
     	backgroundColor: '#FFFFFF',
-		height: 3,	
+		height: 3,
   	},
 		labelStyle: {
     	fontWeight: 'bold',
@@ -66,9 +67,6 @@ const RootNavigator = StackNavigator({
   },
   RecipePage: {
     screen: RecipePage,
-    navigationOptions: {
-      headerTitle: 'Recipe Page',
-    },
   },
 });
 
@@ -79,7 +77,7 @@ class App extends React.Component {
       // TODO: Add Navigator in view and provide padding: https://github.com/react-community/react-navigation/issues/1478
 		<View style={{flex:1}}>
 		<View style={styles.statusBar} />
-        	<RootNavigator/>
+        	<RootNavigator screenProps={this.props} />
 		</View>
     );
   }
@@ -101,6 +99,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#45c006",
     height: StatusBar.currentHeight,
   },
-	
+
 });
 Expo.registerRootComponent(withAuth(App));

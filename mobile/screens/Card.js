@@ -42,10 +42,10 @@ class RecipeCard extends React.Component {
 				source={{uri: this.props.data.imageurl}}
 				/>
 				<View>
-				<Text numberOfLines={3} ellipsizeMode ={'tail'} style={{fontSize:18, marginBottom:10}}>
-				  {this.props.data.name}
+				<Text numberOfLines={3} ellipsizeMode ={'tail'} style={{fontSize:18, marginBottom:10, marginRight: 110}}>
+				  {this.props.data.title}
 				</Text>
-			<Text style={{color:'#388E3C'}}>
+			<Text style={{color:'#388E3C', marginRight: 110}}>
 				By: {this.props.data.recipeby}
 			</Text>
 			</View>
